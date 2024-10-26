@@ -1,9 +1,10 @@
 package backend.academy.analyzer;
 
+import backend.academy.analyzer.converter.ISO8601TimestampConverter;
 import com.beust.jcommander.Parameter;
-import lombok.Getter;
 import java.time.Instant;
 import java.util.List;
+import lombok.Getter;
 
 @Getter
 public class CliParams {
@@ -18,13 +19,15 @@ public class CliParams {
 
     @Parameter(
         names = "--from",
-        description = "Analysis start time in ISO8601 format (optional)"
+        description = "Analysis start time in ISO8601 format (optional)",
+        converter = ISO8601TimestampConverter.class
     )
     private Instant from;
 
     @Parameter(
         names = "--to",
-        description = "Analysis end time in ISO8601 format (optional)"
+        description = "Analysis end time in ISO8601 format (optional)",
+        converter = ISO8601TimestampConverter.class
     )
     private Instant to;
 
