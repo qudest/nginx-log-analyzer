@@ -1,6 +1,6 @@
 package backend.academy.analyzer.parser;
 
-import backend.academy.analyzer.Params;
+import backend.academy.analyzer.params.Params;
 
 public interface ParamsParser {
 

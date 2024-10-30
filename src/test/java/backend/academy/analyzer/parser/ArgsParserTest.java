@@ -1,8 +1,8 @@
 package backend.academy.analyzer.parser;
 
-import backend.academy.analyzer.FilterField;
-import backend.academy.analyzer.OutputFormat;
-import backend.academy.analyzer.Params;
+import backend.academy.analyzer.params.FilterField;
+import backend.academy.analyzer.params.OutputFormat;
+import backend.academy.analyzer.params.Params;
 import com.beust.jcommander.ParameterException;
 import org.junit.jupiter.api.Test;
 import java.time.LocalDateTime;

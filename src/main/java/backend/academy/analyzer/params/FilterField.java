@@ -1,4 +1,4 @@
-package backend.academy.analyzer;
+package backend.academy.analyzer.params;
 
 public enum FilterField {
 

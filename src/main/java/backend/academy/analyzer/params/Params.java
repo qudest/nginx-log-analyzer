@@ -1,4 +1,4 @@
-package backend.academy.analyzer;
+package backend.academy.analyzer.params;
 
 import backend.academy.analyzer.converter.ISO8601TimestampConverter;
 import com.beust.jcommander.Parameter;

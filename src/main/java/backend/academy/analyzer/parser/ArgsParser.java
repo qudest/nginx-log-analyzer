@@ -1,6 +1,6 @@
 package backend.academy.analyzer.parser;
 
-import backend.academy.analyzer.Params;
+import backend.academy.analyzer.params.Params;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
