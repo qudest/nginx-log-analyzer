@@ -5,9 +5,17 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import java.time.Instant;
 import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode
+@Builder
 public class Params {
 
     @Parameter(
@@ -42,7 +50,7 @@ public class Params {
         names = "--filter-field",
         description = "Filter field (optional)"
     )
-    private String filterField;
+    private FilterField filterField;
 
     @Parameter(
         names = "--filter-value",
