@@ -8,7 +8,11 @@ public class ValueFilter implements Filter {
 
     @Override
     public boolean doFilter(LogRecord logRecord, Params params) {
-        Pattern pattern = Pattern.compile(params.filterValue());
+        String filterValue = params.filterValue();
+        if (filterValue == null) {
+            return true;
+        }
+        Pattern pattern = Pattern.compile(filterValue);
         switch (params.filterField()) {
             case ADDRESS -> {
                 return pattern.matcher(logRecord.remoteAddr()).find();
