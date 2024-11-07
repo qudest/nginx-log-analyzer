@@ -2,7 +2,6 @@ package backend.academy.analyzer.params;
 
 import backend.academy.analyzer.converter.ISO8601TimestampConverter;
 import com.beust.jcommander.Parameter;
-import com.beust.jcommander.ParameterException;
 import java.time.Instant;
 import java.util.List;
 import lombok.AllArgsConstructor;
@@ -57,15 +56,5 @@ public class Params {
         description = "Filter value (optional)"
     )
     private String filterValue;
-
-    private void validateTimeRange() {
-        if (from != null && to != null && from.isAfter(to)) {
-            throw new ParameterException("The start time cannot be later than the end time");
-        }
-    }
-
-    public void validate() {
-        validateTimeRange();
-    }
 
 }
