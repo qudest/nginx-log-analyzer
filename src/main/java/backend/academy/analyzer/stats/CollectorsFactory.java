@@ -28,21 +28,22 @@ public class CollectorsFactory {
             Comparator.comparing((Metric metric) -> Long.parseLong(metric.value())).reversed();
         int limit = 5;
         return List.of(Collectors.collectingAndThen(Collectors.groupingBy(LogRecord::request, Collectors.counting()),
-                map -> new Table("Запрашиваемые ресурсы",
+                map -> new Table("Запрашиваемые ресурсы", List.of("Ресурс", "Количество"),
                     map.entrySet().stream().map(e -> new Metric(e.getKey(), String.valueOf(e.getValue())))
                         .sorted(comparator)
                         .limit(limit)
                         .toList())),
 
             Collectors.collectingAndThen(Collectors.groupingBy(LogRecord::status, Collectors.counting()),
-                map -> new Table("Коды ответов", map.entrySet().stream()
-                    .map(e -> new Metric(String.valueOf(e.getKey()), String.valueOf(e.getValue())))
-                    .sorted(comparator)
-                    .limit(limit)
-                    .toList())),
+                map -> new Table("Коды ответов", List.of("Код", "Количество"),
+                    map.entrySet().stream()
+                        .map(e -> new Metric(String.valueOf(e.getKey()), String.valueOf(e.getValue())))
+                        .sorted(comparator)
+                        .limit(limit)
+                        .toList())),
 
             Collectors.collectingAndThen(Collectors.groupingBy(LogRecord::remoteAddr, Collectors.counting()),
-                map -> new Table("Частые клиенты",
+                map -> new Table("Частые клиенты", List.of("IP", "Количество"),
                     map.entrySet().stream().map(e -> new Metric(e.getKey(), String.valueOf(e.getValue())))
                         .sorted(comparator)
                         .limit(limit)
