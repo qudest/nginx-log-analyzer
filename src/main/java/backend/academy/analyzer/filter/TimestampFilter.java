@@ -7,13 +7,24 @@ public class TimestampFilter implements Filter {
 
     @Override
     public boolean doFilter(LogRecord logRecord, Params params) {
+        if (params.from() != null && params.to() != null) {
+            return isAfter(logRecord, params) && isBefore(logRecord, params);
+        }
         if (params.from() != null) {
-            return logRecord.timeLocal().isAfter(params.from());
+            return isAfter(logRecord, params);
         }
         if (params.to() != null) {
-            return logRecord.timeLocal().isBefore(params.to());
+            return isBefore(logRecord, params);
         }
-        return false;
+        return true;
+    }
+
+    private static boolean isAfter(LogRecord logRecord, Params params) {
+        return logRecord.timeLocal().isAfter(params.from());
+    }
+
+    private static boolean isBefore(LogRecord logRecord, Params params) {
+        return logRecord.timeLocal().isBefore(params.to());
     }
 
 }
