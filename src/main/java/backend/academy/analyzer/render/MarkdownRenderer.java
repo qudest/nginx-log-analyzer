@@ -1,11 +1,9 @@
 package backend.academy.analyzer.render;
 
-import backend.academy.analyzer.log.LogReport;
 import backend.academy.analyzer.stats.Metric;
-import backend.academy.analyzer.stats.Table;
 import java.util.List;
 
-public class MarkdownRenderer implements Renderer {
+public class MarkdownRenderer extends Renderer {
 
     private static final String HEADER = "####";
     private static final String VERTICAL_LINE = "|";
@@ -16,23 +14,12 @@ public class MarkdownRenderer implements Renderer {
     private static final Character LINE_BREAK = '\n';
 
     @Override
-    public String render(LogReport logReport) {
-        StringBuilder sb = new StringBuilder();
-
-        for (Table table : logReport.tables()) {
-            sb.append(renderHeader(table.name()));
-            sb.append(renderTableHeaders(table.headers()));
-            sb.append(renderTableValues(table.values()));
-        }
-
-        return sb.toString();
-    }
-
-    private String renderHeader(String header) {
+    String renderHeader(String header) {
         return HEADER + SPACE + header + LINE_BREAK + LINE_BREAK;
     }
 
-    private String renderTableHeaders(List<String> headers) {
+    @Override
+    String renderTableHeaders(List<String> headers) {
         StringBuilder sb = new StringBuilder();
         for (String header : headers) {
             sb.append(VERTICAL_LINE).append(header);
@@ -45,7 +32,8 @@ public class MarkdownRenderer implements Renderer {
         return sb.toString();
     }
 
-    private String renderTableValues(List<Metric> values) {
+    @Override
+    String renderTableValues(List<Metric> values) {
         StringBuilder sb = new StringBuilder();
         for (Metric metric : values) {
             sb.append(VERTICAL_LINE)
