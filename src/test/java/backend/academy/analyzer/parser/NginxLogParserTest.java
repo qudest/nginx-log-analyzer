@@ -48,12 +48,19 @@ class NginxLogParserTest {
     @Test
     void parseLogLineWithInvalidFormat() {
         String logLine = "Invalid log line format";
-        assertThrows(IllegalArgumentException.class, () -> nginxLogParser.parse(logLine));
+        assertNull(nginxLogParser.parse(logLine));
     }
 
     @Test
     void parseLogLineWithMissingFields() {
         String logLine = "127.0.0.1 - user [17/May/2015:08:05:32 +0000] \"GET / HTTP/1.1\" 200";
-        assertThrows(IllegalArgumentException.class, () -> nginxLogParser.parse(logLine));
+        assertNull(nginxLogParser.parse(logLine));
     }
+
+    @Test
+    void parseLogLineWithInvalidDate() {
+        String logLine = "127.0.0.1 - user [31/Feb/2015:08:05:32 +0000] \"GET / HTTP/1.1\" 200\"";
+        assertNull(nginxLogParser.parse(logLine));
+    }
+
 }
