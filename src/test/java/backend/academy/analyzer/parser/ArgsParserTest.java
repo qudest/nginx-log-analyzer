@@ -94,4 +94,16 @@ class ArgsParserTest {
         };
         assertThrows(ParameterException.class, () -> paramsParser.parse(args2));
     }
+
+    @Test
+    void parseWithoutFilterField() {
+        String[] args = {
+            "--path",
+            "logs/**/2024-08-31.txt",
+            "--filter-value",
+            "AGENT"
+        };
+        assertThrows(ParameterException.class, () -> paramsParser.parse(args));
+    }
+
 }
