@@ -9,6 +9,7 @@ public final class ParamsValidator {
     public static void validate(Params params) {
         validateTimeRange(params);
         validateFilterValue(params);
+        validatePath(params);
     }
 
     private static void validateTimeRange(Params params) {
@@ -22,6 +23,12 @@ public final class ParamsValidator {
     private static void validateFilterValue(Params params) {
         if (params.filterField() == null && params.filterValue() != null) {
             throw new ParameterException("If you use a filter value, the filter field is required");
+        }
+    }
+
+    private static void validatePath(Params params) {
+        if (params.path() == null || params.path().isEmpty()) {
+            throw new ParameterException("Expected a value after parameter --path");
         }
     }
 
