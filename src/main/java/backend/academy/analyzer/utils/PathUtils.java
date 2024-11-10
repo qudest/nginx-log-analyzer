@@ -12,6 +12,7 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public final class PathUtils {
 
@@ -65,6 +66,19 @@ public final class PathUtils {
         });
 
         return paths;
+    }
+
+    public static Map.Entry<String, String> split(String path) {
+        int index = path.lastIndexOf(FileSystems.getDefault().getSeparator());
+        if (index == -1) {
+            return Map.entry("", path);
+        }
+
+        if (path.startsWith("**", index-2)) {
+            return Map.entry(path.substring(0, index-2), path.substring(index-2));
+        } else {
+            return Map.entry(path.substring(0, index), path.substring(index+1));
+        }
     }
 
     private PathUtils() {
