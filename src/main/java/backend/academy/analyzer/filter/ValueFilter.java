@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 
 public class ValueFilter implements Filter {
 
+    @SuppressWarnings("ReturnCount")
     @Override
     public boolean doFilter(LogRecord logRecord, Params params) {
         String filterValue = params.filterValue();
