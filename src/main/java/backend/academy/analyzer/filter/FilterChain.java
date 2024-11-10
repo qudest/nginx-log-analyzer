@@ -2,9 +2,8 @@ package backend.academy.analyzer.filter;
 
 import backend.academy.analyzer.log.LogRecord;
 import backend.academy.analyzer.params.Params;
-import lombok.Setter;
-
 import java.util.List;
+import lombok.Setter;
 
 @Setter
 public class FilterChain {
@@ -19,6 +18,9 @@ public class FilterChain {
     public boolean filter(LogRecord logRecord) {
         if (params == null) {
             return true;
+        }
+        if (logRecord == null) {
+            return false;
         }
         return filters.stream().allMatch(filter -> filter.doFilter(logRecord, params));
     }
