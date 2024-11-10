@@ -2,7 +2,7 @@ package backend.academy.analyzer.reader;
 
 import backend.academy.analyzer.utils.PathUtils;
 
-public class ReaderFactory {
+public final class ReaderFactory {
 
     public static Reader getReader(String path) {
         if (PathUtils.isValidUrl(path)) {
@@ -10,6 +10,9 @@ public class ReaderFactory {
         } else {
             return new FileReader();
         }
+    }
+
+    private ReaderFactory() {
     }
 
 }
