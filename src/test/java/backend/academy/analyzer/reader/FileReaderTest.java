@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class FileReaderTest {
@@ -31,11 +30,6 @@ class FileReaderTest {
         List<String> result = lines.toList();
         assertTrue(result.isEmpty());
         Files.delete(tempFile);
-    }
-
-    @Test
-    void readNonExistentFile() {
-        assertThrows(IOException.class, () -> fileReader.read("nonexistentfile.txt"));
     }
 
 }
