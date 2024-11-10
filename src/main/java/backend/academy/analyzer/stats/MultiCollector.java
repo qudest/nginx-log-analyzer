@@ -1,7 +1,5 @@
 package backend.academy.analyzer.stats;
 
-import backend.academy.analyzer.log.LogRecord;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.function.BiConsumer;
@@ -9,25 +7,28 @@ import java.util.function.BinaryOperator;
 import java.util.function.Function;
 import java.util.stream.Collector;
 
-public class StatisticsCollector {
+public final class MultiCollector {
 
-    public static <R> Collector<LogRecord, ?, List<R>> get(List<Collector<LogRecord, Object, R>> collectors) {
+    public static <T, R> Collector<T, ?, List<R>> get(List<Collector<T, Object, R>> collectors) {
         return Collector.of(
-                () -> new CollectorsBox<>(collectors),
-                CollectorsBox::add,
-                CollectorsBox::combine,
-                CollectorsBox::get
+            () -> new CollectorsBox<>(collectors),
+            CollectorsBox::add,
+            CollectorsBox::combine,
+            CollectorsBox::get
         );
     }
 
-    static class CollectorsBox<R> {
+    private MultiCollector() {
+    }
+
+    static class CollectorsBox<T, R> {
 
         List<Object> intermediateResults = new ArrayList<>();
-        List<BiConsumer<Object, LogRecord>> accumulators = new ArrayList<>();
+        List<BiConsumer<Object, T>> accumulators = new ArrayList<>();
         List<BinaryOperator<Object>> combiners = new ArrayList<>();
         List<Function<Object, R>> finishers = new ArrayList<>();
 
-        public CollectorsBox(List<Collector<LogRecord, Object, R>> collectors) {
+        CollectorsBox(List<Collector<T, Object, R>> collectors) {
             for (var collector : collectors) {
                 var supplier = collector.supplier();
                 intermediateResults.add(supplier.get());
@@ -37,15 +38,16 @@ public class StatisticsCollector {
             }
         }
 
-        void add(LogRecord logRecord) {
+        void add(T t) {
             for (int i = 0; i < accumulators.size(); i++) {
-                accumulators.get(i).accept(intermediateResults.get(i), logRecord);
+                accumulators.get(i).accept(intermediateResults.get(i), t);
             }
         }
 
-        StatisticsCollector.CollectorsBox<R> combine(StatisticsCollector.CollectorsBox<R> other) {
+        MultiCollector.CollectorsBox<T, R> combine(MultiCollector.CollectorsBox<T, R> other) {
             for (int i = 0; i < intermediateResults.size(); i++) {
-                intermediateResults.set(i, combiners.get(i).apply(intermediateResults.get(i), other.intermediateResults.get(i)));
+                intermediateResults.set(i,
+                    combiners.get(i).apply(intermediateResults.get(i), other.intermediateResults.get(i)));
             }
             return this;
         }
@@ -57,6 +59,7 @@ public class StatisticsCollector {
             }
             return elements;
         }
+
     }
 
 }
