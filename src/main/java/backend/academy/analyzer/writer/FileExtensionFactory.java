@@ -2,13 +2,19 @@ package backend.academy.analyzer.writer;
 
 import backend.academy.analyzer.params.OutputFormat;
 
-public class FileExtensionFactory {
+public final class FileExtensionFactory {
+
+    private static final String ADOC = ".adoc";
+    private static final String MD = ".md";
 
     public static String getFileExtension(OutputFormat outputFormat) {
         if (outputFormat == OutputFormat.ADOC) {
-            return ".adoc";
+            return ADOC;
         }
-        return ".md";
+        return MD;
+    }
+
+    private FileExtensionFactory() {
     }
 
 }
