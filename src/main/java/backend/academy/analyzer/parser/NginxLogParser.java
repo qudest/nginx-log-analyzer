@@ -1,18 +1,20 @@
 package backend.academy.analyzer.parser;
 
 import backend.academy.analyzer.log.LogRecord;
+import lombok.extern.slf4j.Slf4j;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+@Slf4j
 public class NginxLogParser implements LogParser {
 
     private static final String LOG_PATTERN =
-            "^(?<remoteAddr>(\\d{1,3}\\.){3}\\d{1,3}|[0-9a-fA-F:]+) - (?<remoteUser>[^ ]+) \\[(?<timeLocal>[^]]+)] " +
-                "\"(?<request>[^\"]+)\" (?<status>\\d{3}) (?<bodyBytesSent>\\d+) " +
-                "\"(?<httpReferer>[^\"]*)\" \"(?<httpUserAgent>[^\"]*)\"$";
+        "^(?<remoteAddr>(\\d{1,3}\\.){3}\\d{1,3}|[0-9a-fA-F:]+) - (?<remoteUser>[^ ]+) \\[(?<timeLocal>[^]]+)] "
+            + "\"(?<request>[^\"]+)\" (?<status>\\d{3}) (?<bodyBytesSent>\\d+) "
+            + "\"(?<httpReferer>[^\"]*)\" \"(?<httpUserAgent>[^\"]*)\"$";
 
     private static final DateTimeFormatter FORMATTER =
         DateTimeFormatter.ofPattern("dd/MMM/yyyy:HH:mm:ss Z", Locale.ENGLISH);
@@ -34,7 +36,8 @@ public class NginxLogParser implements LogParser {
                 .httpUserAgent(matcher.group("httpUserAgent"))
                 .build();
         } else {
-            throw new IllegalArgumentException("Invalid log record: " + line);
+            log.error("Invalid log line format: {}", line);
+            return null;
         }
 
     }
