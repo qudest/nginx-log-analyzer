@@ -1,13 +1,13 @@
 package backend.academy.analyzer.parser;
 
 import backend.academy.analyzer.log.LogRecord;
-import lombok.extern.slf4j.Slf4j;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class NginxLogParser implements LogParser {
