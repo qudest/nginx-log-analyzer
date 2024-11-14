@@ -17,7 +17,7 @@ class ArgsParserTest {
     @Test
     void parse() {
         Params params = Params.builder()
-            .path(List.of(
+            .paths(List.of(
                 "logs/**/2024-08-31.txt",
                 "https://raw.githubusercontent.com/elastic/examples/master/Common%20Data%20Formats/nginx_logs/nginx_logs"
             ))

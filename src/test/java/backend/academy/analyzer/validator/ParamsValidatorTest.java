@@ -19,7 +19,7 @@ class ParamsValidatorTest {
             .to(Instant.parse("2024-01-02T00:00:00Z"))
             .filterField(FilterField.STATUS)
             .filterValue("value")
-            .path(List.of("valid/path"))
+            .paths(List.of("valid/path"))
             .build();
         ParamsValidator.validate(params);
     }
@@ -44,7 +44,7 @@ class ParamsValidatorTest {
     @Test
     void validateWithEmptyPath() {
         Params params = Params.builder()
-            .path(List.of())
+            .paths(List.of())
             .build();
         assertThrows(ParameterException.class, () -> ParamsValidator.validate(params));
     }
@@ -52,7 +52,7 @@ class ParamsValidatorTest {
     @Test
     void validateWithNullPath() {
         Params params = Params.builder()
-            .path(null)
+            .paths(null)
             .build();
         assertThrows(ParameterException.class, () -> ParamsValidator.validate(params));
     }

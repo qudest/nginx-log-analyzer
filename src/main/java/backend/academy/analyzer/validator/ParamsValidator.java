@@ -27,7 +27,7 @@ public final class ParamsValidator {
     }
 
     private static void validatePath(Params params) {
-        if (params.path() == null || params.path().isEmpty()) {
+        if (params.paths() == null || params.paths().isEmpty()) {
             throw new ParameterException("Expected a value after parameter --path");
         }
     }

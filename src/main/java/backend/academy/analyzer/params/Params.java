@@ -23,7 +23,7 @@ public class Params {
         variableArity = true,
         required = true
     )
-    private List<String> path;
+    private List<String> paths;
 
     @Parameter(
         names = "--from",
