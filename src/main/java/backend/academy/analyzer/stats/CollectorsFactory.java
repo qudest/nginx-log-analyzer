@@ -34,7 +34,7 @@ public final class CollectorsFactory {
 
     public static List<Collector<LogRecord, Object, Table>> getTableCollectors() {
         Comparator<Metric> comparator =
-            Comparator.comparing((Metric metric) -> Long.parseLong(metric.value())).reversed();
+            Comparator.comparing((Metric metric) -> Long.valueOf(metric.value())).reversed();
         return List.of(Collectors.collectingAndThen(Collectors.groupingBy(LogRecord::request, Collectors.counting()),
                 map -> new Table("Запрашиваемые ресурсы", List.of("Ресурс", "Количество"),
                     map.entrySet().stream().map(e -> new Metric(e.getKey(), String.valueOf(e.getValue())))
