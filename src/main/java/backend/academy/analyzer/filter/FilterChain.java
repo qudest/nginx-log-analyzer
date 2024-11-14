@@ -17,10 +17,7 @@ public class FilterChain {
 
     public boolean filter(LogRecord logRecord) {
         if (params == null) {
-            return true;
-        }
-        if (logRecord == null) {
-            return false;
+            throw new IllegalStateException("Params must be set before filtering");
         }
         return filters.stream().allMatch(filter -> filter.doFilter(logRecord, params));
     }
