@@ -12,7 +12,6 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public final class PathUtils {
 
@@ -25,8 +24,10 @@ public final class PathUtils {
         }
     }
 
-    public static List<String> match(String glob, String location) throws IOException {
+    public static List<String> match(PathSplit pathSplit) throws IOException {
         List<String> paths = new ArrayList<>();
+        String location = pathSplit.location();
+        String glob = pathSplit.glob();
 
         Path path = Path.of(location);
         if (!path.isAbsolute()) {
@@ -35,7 +36,7 @@ public final class PathUtils {
         final Path finalPath = path;
 
         String pattern = "**" + FileSystems.getDefault().getSeparator();
-        boolean isRecursive = glob.startsWith(pattern);
+        boolean isRecursive = glob.contains(pattern);
         if (isRecursive) {
             glob = glob.substring(pattern.length());
         }
@@ -44,8 +45,7 @@ public final class PathUtils {
 
         Files.walkFileTree(path, new SimpleFileVisitor<>() {
 
-            @Override
-            public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
+            @Override public FileVisitResult preVisitDirectory(Path dir, BasicFileAttributes attrs) {
                 if (!isRecursive && !finalPath.equals(dir)) {
                     return FileVisitResult.SKIP_SUBTREE;
                 }
@@ -68,17 +68,24 @@ public final class PathUtils {
         return paths;
     }
 
-    public static Map.Entry<String, String> split(String path) {
-        int index = path.lastIndexOf(FileSystems.getDefault().getSeparator());
-        if (index == -1) {
-            return Map.entry("", path);
+    public static PathSplit split(String path) {
+        int lastIndexOfSeparator = path.lastIndexOf(FileSystems.getDefault().getSeparator());
+        // Пример *.txt
+        if (lastIndexOfSeparator == -1) {
+            return new PathSplit("", path);
         }
 
-        if (path.startsWith("**", index-2)) {
-            return Map.entry(path.substring(0, index-2), path.substring(index-2));
-        } else {
-            return Map.entry(path.substring(0, index), path.substring(index+1));
+        // Пример /path/to/*.txt
+        String location = path.substring(0, lastIndexOfSeparator);
+        String glob = path.substring(lastIndexOfSeparator + 1);
+
+        // Пример /path/to/**/*.txt
+        if (path.startsWith("**", lastIndexOfSeparator - 2)) {
+            location = path.substring(0, lastIndexOfSeparator - 2);
+            glob = path.substring(lastIndexOfSeparator - 2);
         }
+
+        return new PathSplit(location, glob);
     }
 
     private PathUtils() {
