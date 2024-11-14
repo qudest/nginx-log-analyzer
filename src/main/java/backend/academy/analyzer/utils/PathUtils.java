@@ -17,7 +17,7 @@ public final class PathUtils {
 
     public static boolean isValidUrl(String path) {
         try {
-            URL url = URI.create(path).toURL();
+            URI.create(path).toURL();
             return true;
         } catch (Exception e) {
             return false;
