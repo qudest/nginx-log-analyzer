@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 
 class NginxLogParserTest {
@@ -15,7 +16,8 @@ class NginxLogParserTest {
     void parseValidLogLine() {
         String logLine =
             "127.0.0.1 - - [17/May/2015:08:05:32 +0000] \"GET / HTTP/1.1\" 200 1234 \"-\" \"Mozilla/5.0\"";
-        LogRecord record = nginxLogParser.parse(logLine);
+        Optional<LogRecord> parse = nginxLogParser.parse(logLine);
+        LogRecord record = parse.orElse(null);
         assertNotNull(record);
         assertEquals("127.0.0.1", record.remoteAddr());
         assertEquals("-", record.remoteUser());
@@ -32,7 +34,8 @@ class NginxLogParserTest {
     void parseLogLineWithIPv6Address() {
         String logLine =
             "2001:0db8:85a3:0000:0000:8a2e:0370:7334 - user [17/May/2015:08:05:32 +0000] \"GET / HTTP/1.1\" 200 1234 \"-\" \"Mozilla/5.0\"";
-        LogRecord record = nginxLogParser.parse(logLine);
+        Optional<LogRecord> parse = nginxLogParser.parse(logLine);
+        LogRecord record = parse.orElse(null);
         assertNotNull(record);
         assertEquals("2001:0db8:85a3:0000:0000:8a2e:0370:7334", record.remoteAddr());
         assertEquals("user", record.remoteUser());
