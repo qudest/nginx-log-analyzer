@@ -23,41 +23,58 @@ public final class MultiCollector {
 
     static class CollectorsBox<T, R> {
 
-        List<Object> intermediateResults = new ArrayList<>();
-        List<BiConsumer<Object, T>> accumulators = new ArrayList<>();
-        List<BinaryOperator<Object>> combiners = new ArrayList<>();
-        List<Function<Object, R>> finishers = new ArrayList<>();
+        List<CollectorData<T, R>> collectorDataList;
 
         CollectorsBox(List<Collector<T, Object, R>> collectors) {
+            collectorDataList = new ArrayList<>(collectors.size());
             for (var collector : collectors) {
                 var supplier = collector.supplier();
-                intermediateResults.add(supplier.get());
-                accumulators.add(collector.accumulator());
-                combiners.add(collector.combiner());
-                finishers.add(collector.finisher());
+                collectorDataList.add(new CollectorData<>(
+                    supplier.get(),
+                    collector.accumulator(),
+                    collector.combiner(),
+                    collector.finisher()));
             }
         }
 
         void add(T t) {
-            for (int i = 0; i < accumulators.size(); i++) {
-                accumulators.get(i).accept(intermediateResults.get(i), t);
+            for (var data : collectorDataList) {
+                data.accumulator.accept(data.intermediateResult, t);
             }
         }
 
         MultiCollector.CollectorsBox<T, R> combine(MultiCollector.CollectorsBox<T, R> other) {
-            for (int i = 0; i < intermediateResults.size(); i++) {
-                intermediateResults.set(i,
-                    combiners.get(i).apply(intermediateResults.get(i), other.intermediateResults.get(i)));
+            for (int i = 0; i < collectorDataList.size(); i++) {
+                var data = collectorDataList.get(i);
+                var otherData = other.collectorDataList.get(i);
+                data.intermediateResult = data.combiner.apply(data.intermediateResult, otherData.intermediateResult);
             }
             return this;
         }
 
         List<R> get() {
-            List<R> elements = new ArrayList<>();
-            for (int i = 0; i < finishers.size(); i++) {
-                elements.add(finishers.get(i).apply(intermediateResults.get(i)));
+            List<R> elements = new ArrayList<>(collectorDataList.size());
+            for (var data : collectorDataList) {
+                elements.add(data.finisher.apply(data.intermediateResult));
             }
             return elements;
+        }
+
+        static class CollectorData<T, R> {
+            Object intermediateResult;
+            BiConsumer<Object, T> accumulator;
+            BinaryOperator<Object> combiner;
+            Function<Object, R> finisher;
+
+            CollectorData(
+                Object intermediateResult, BiConsumer<Object, T> accumulator,
+                BinaryOperator<Object> combiner, Function<Object, R> finisher
+            ) {
+                this.intermediateResult = intermediateResult;
+                this.accumulator = accumulator;
+                this.combiner = combiner;
+                this.finisher = finisher;
+            }
         }
 
     }
