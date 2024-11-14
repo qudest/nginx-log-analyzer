@@ -6,9 +6,9 @@ import java.util.List;
 public class MarkdownRenderer extends Renderer {
 
     private static final String HEADER = "####";
-    private static final String VERTICAL_LINE = "|";
-    private static final String HORIZONTAL_LINE = "-";
-    private static final String ITALIC = "*";
+    private static final Character VERTICAL_LINE = '|';
+    private static final Character HORIZONTAL_LINE = '-';
+    private static final Character ITALIC = '*';
 
     private static final Character SPACE = ' ';
     private static final Character LINE_BREAK = '\n';

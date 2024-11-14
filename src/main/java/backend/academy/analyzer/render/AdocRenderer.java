@@ -6,10 +6,10 @@ import java.util.List;
 public class AdocRenderer extends Renderer {
 
     private static final String HEADER = "====";
-    private static final String VERTICAL_LINE = "|";
+    private static final Character VERTICAL_LINE = '|';
     private static final String TABLE_ENDS = VERTICAL_LINE + "===";
-    private static final String ITALIC = "_";
-    private static final String BOLD = "*";
+    private static final Character ITALIC = '_';
+    private static final Character BOLD = '*';
 
     private static final Character SPACE = ' ';
     private static final Character LINE_BREAK = '\n';
