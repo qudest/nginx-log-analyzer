@@ -8,14 +8,16 @@ import java.nio.file.Paths;
 
 public class FileWriter implements Writer {
 
+    private static final Path BASE_DIR = Paths.get(System.getProperty("user.dir"));
+
     @Override
-    public void write(String path, String content, OutputFormat outputFormat) throws IOException {
+    public void write(Path path, String content, OutputFormat outputFormat) throws IOException {
         String fileName = "report" + FileExtensionFactory.getFileExtension(outputFormat);
-        Path pathToFile = Paths.get(path, fileName);
+        Path pathToFile = path.resolve(fileName);
         long counter = 1;
         while (Files.exists(pathToFile)) {
             fileName = "report_" + counter + FileExtensionFactory.getFileExtension(outputFormat);
-            pathToFile = Paths.get(path, fileName);
+            pathToFile = path.resolve(fileName);
             counter++;
         }
         Files.writeString(pathToFile, content);
@@ -23,7 +25,7 @@ public class FileWriter implements Writer {
 
     @Override
     public void write(String content, OutputFormat outputFormat) throws IOException {
-        write(System.getProperty("user.dir"), content, outputFormat);
+        write(BASE_DIR, content, outputFormat);
     }
 
 }
