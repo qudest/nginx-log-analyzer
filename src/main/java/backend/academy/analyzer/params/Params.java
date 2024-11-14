@@ -1,6 +1,7 @@
 package backend.academy.analyzer.params;
 
 import backend.academy.analyzer.converter.ISO8601TimestampConverter;
+import backend.academy.analyzer.stats.Metric;
 import com.beust.jcommander.Parameter;
 import java.time.Instant;
 import java.util.List;
@@ -56,5 +57,13 @@ public class Params {
         description = "Filter value (optional)"
     )
     private String filterValue;
+
+    public List<Metric> getInfoMetrics() {
+        return List.of(
+            new Metric("Файл(-ы)", String.join(", ", paths)),
+            new Metric("Начальная дата", from() == null ? "-" : from().toString()),
+            new Metric("Конечная дата", to() == null ? "-" : to().toString())
+        );
+    }
 
 }
