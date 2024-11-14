@@ -21,13 +21,17 @@ public class ISO8601TimestampConverter implements IStringConverter<Instant> {
 
     @Override
     public Instant convert(String s) {
+        if (s == null) {
+            log.error("Timestamp value is null");
+            throw new ParameterException("Timestamp value is missing.");
+        }
         try {
             if (s.contains("T")) {
                 return ZonedDateTime.parse(s, FORMATTER).toInstant();
             } else {
                 return LocalDate.parse(s).atStartOfDay(ZoneOffset.UTC).toInstant();
             }
-        } catch (DateTimeParseException | NullPointerException e) {
+        } catch (DateTimeParseException e) {
             log.error("Invalid timestamp value: {}", s);
             throw new ParameterException("Invalid timestamp value: " + s + ". Use ISO 8601 format.", e);
         }
