@@ -15,8 +15,8 @@ public class AdocRenderer extends Renderer {
     private static final Character LINE_BREAK = '\n';
 
     @Override
-    String renderHeader(String header) {
-        return HEADER + SPACE + header + LINE_BREAK + LINE_BREAK;
+    String renderTableName(String name) {
+        return HEADER + SPACE + name + LINE_BREAK + LINE_BREAK;
     }
 
     @Override

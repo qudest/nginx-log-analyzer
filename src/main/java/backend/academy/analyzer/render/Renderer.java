@@ -11,7 +11,7 @@ public abstract class Renderer {
         StringBuilder sb = new StringBuilder();
 
         for (Table table : logReport.tables()) {
-            sb.append(renderHeader(table.name()));
+            sb.append(renderTableName(table.name()));
             sb.append(renderTableHeaders(table.headers()));
             sb.append(renderTableValues(table.values()));
         }
@@ -19,7 +19,7 @@ public abstract class Renderer {
         return sb.toString();
     }
 
-    abstract String renderHeader(String header);
+    abstract String renderTableName(String name);
 
     abstract String renderTableHeaders(List<String> headers);
 
