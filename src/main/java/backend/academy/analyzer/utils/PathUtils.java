@@ -2,7 +2,6 @@ package backend.academy.analyzer.utils;
 
 import java.io.IOException;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.FileSystems;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
